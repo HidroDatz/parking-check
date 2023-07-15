@@ -20,7 +20,7 @@ const Page2 = () => {
   return (
     <div className="centered">
       <Typography variant="h4" component="h2" gutterBottom>
-        Page 2
+        Tracking Parking Slots
       </Typography>
       <TableContainer component={Paper}>
         <Table>
