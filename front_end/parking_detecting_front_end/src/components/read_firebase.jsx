@@ -21,40 +21,60 @@ const ParkingCheck = () => {
     const [jsonData, setJsonData] = useState(null);
     const [zone1, setZone1] = useState([]);
     const [zone2, setZone2] = useState([]);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const fetchData = () => {
+        const dataRef = ref(db, "/");
+        const unsubscribe = onValue(dataRef, (snapshot) => {
+          setJsonData(snapshot.val());
+        });
+        setTimeout(() => {
+            setIsRefreshing(false); // Refresh is complete
+          }, 2000);
+        return () => unsubscribe();
+      };
+    
+      useEffect(() => {
+        fetchData();
+      }, []);
 
     useEffect(() => {
-        // Đọc dữ liệu từ tệp JSON (hoặc từ API) bằng cách import tệp JSON hoặc sử dụng fetch
-        const dataRef = ref(db, '/');
+        if (jsonData) {
+            const zone1Data = [];
+            const zone2Data = [];
 
-        onValue(dataRef, (snapshot) => {
-            setJsonData(snapshot.val());
-        });
-        console.log(jsonData);
-        // Xử lý dữ liệu để phân loại thành "zone1" và "zone2" với các slot và status tương ứng
-        const zone1Data = [];
-        const zone2Data = [];
-
-        for (const key in jsonData) {
-            if (key.startsWith("Zone1")) {
-                zone1Data.push({
-                    stt: key.replace("Zone1_A", ""),
-                    slot: key.replace("Zone1_", ""),
-                    slotStatus: jsonData[key],
-                });
-            } else if (key.startsWith("Zone2")) {
-                zone2Data.push({
-                    stt: key.replace("Zone2_B", ""),
-                    slot: key.replace("Zone2_", ""),
-                    slotStatus: jsonData[key],
-                });
+            for (const key in jsonData) {
+                if (key.startsWith("Zone1")) {
+                    zone1Data.push({
+                        stt: key.replace("Zone1_A", ""),
+                        slot: key.replace("Zone1_", ""),
+                        slotStatus: jsonData[key],
+                    });
+                } else if (key.startsWith("Zone2")) {
+                    zone2Data.push({
+                        stt: key.replace("Zone2_B", ""),
+                        slot: key.replace("Zone2_", ""),
+                        slotStatus: jsonData[key],
+                    });
+                }
             }
+            setZone1(zone1Data);
+            setZone2(zone2Data);
         }
-
-        // Cập nhật giá trị của "zone1" và "zone2" bằng dữ liệu phân loại
-        setZone1(zone1Data);
-        setZone2(zone2Data);
-    }, []);
-    return Page2(zone1, zone2);
+    }, [jsonData]); 
+      const handleRefresh = () => {
+        setIsRefreshing(true); // Start the refresh
+        fetchData();
+      };
+    return (
+        <div>
+        <button onClick={handleRefresh} disabled={isRefreshing}>
+          {isRefreshing ? "Refreshing..." : "Refresh"}
+        </button>
+        {Page2(zone1, zone2)}
+      </div>
+      );
 }
+
 
 export default ParkingCheck;

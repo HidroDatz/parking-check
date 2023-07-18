@@ -15,6 +15,7 @@ const Page2 = (zone1, zone2) => {
   const getAvailabilityColor = (slotStatus) => {
     return slotStatus ? "green" : "red";
   };
+  console.log(zone1);
   const renderParkingSlotsTable = (zone, zoneData) => (
     <Grid item xs={12} sm={6}>
       <TableContainer component={Paper}>
@@ -38,7 +39,7 @@ const Page2 = (zone1, zone2) => {
                       color: getAvailabilityColor(row.slotStatus),
                     }}
                   >
-                    {row.slotStatus > 0 ? "true" : "false"}
+                    {row.slotStatus ? "Available" : "Parked"}
                   </span>
                 </TableCell>
               </TableRow>
