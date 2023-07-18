@@ -15,7 +15,7 @@ const Home = () => {
         Smart Parking System
       </Typography>
   
-        <Button variant="contained" component={Link} to="/page2">
+        <Button variant="contained" component={Link} to="/Parking_check">
           Check
         </Button>
         <Typography variant="h6" component="h4" gutterBottom style={{color: "#66a3ff"}} >

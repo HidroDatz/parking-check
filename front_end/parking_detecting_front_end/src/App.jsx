@@ -1,25 +1,17 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./components/Home"
-import Page2 from './components/Page2';
+import ParkingCheck from "./components/read_firebase"
 import "./App.css";
 const App = () => {
   return (
-  //   <div
-  //   style={{
-  //     backgroundImage: `url(${parkingImage})`,
-  //     backgroundSize: 'cover',
-  //     backgroundPosition: 'center',
-  //   }}
-  // >
     <Router>
-      
         <Routes>
         <Route path='/' element={<Home/>} />
-        <Route path='/Page2' element={<Page2/>} />
+        <Route path='/Parking_check' element={<ParkingCheck/>} />
         </Routes>
     </Router>
-  // </div>
+
   );
 };
 
