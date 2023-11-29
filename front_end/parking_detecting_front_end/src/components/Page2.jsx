@@ -12,6 +12,10 @@ import {
 } from "@mui/material";
 import "../App.css";
 const Page2 = (zone1, zone2) => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn")
+  if (!isLoggedIn){
+    window.location.href = "/login";
+  }
   const getAvailabilityColor = (slotStatus) => {
     return slotStatus ? "green" : "red";
   };
